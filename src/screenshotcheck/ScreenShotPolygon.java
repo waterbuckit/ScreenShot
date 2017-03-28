@@ -19,7 +19,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author aroyal1
+ * @author waterbuckit
  */
 public class ScreenShotPolygon {
 
