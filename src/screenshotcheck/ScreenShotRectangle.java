@@ -95,10 +95,14 @@ public class ScreenShotRectangle {
 
             @Override
             public void mouseReleased(MouseEvent me) {
-                screen.setVisible(false);
-                saveScreen();
-                System.out.println("Released");
-                System.exit(0);
+                if(!s.rect.isEmpty()){
+                    screen.setVisible(false);
+                    saveScreen();
+                    System.out.println("Released");
+                    System.exit(0);
+                }else{
+                    System.exit(0);
+                }
             }
 
             private void saveScreen() {
