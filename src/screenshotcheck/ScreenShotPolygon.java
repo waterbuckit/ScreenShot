@@ -206,7 +206,7 @@ public class ScreenShotPolygon {
          * @param g2d 
          */
         void draw(Graphics2D g2d) {
-            for (int i = 0; i < pointsClicked.size() - 1; i++) {
+            for (int i = 1; i < pointsClicked.size() - 1; i++) {
                 g2d.drawLine(pointsClicked.get(i).x, pointsClicked.get(i).y,
                         pointsClicked.get(i - 1).x, pointsClicked.get(i - 1).y);
             }
