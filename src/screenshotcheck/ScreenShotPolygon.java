@@ -72,6 +72,7 @@ public class ScreenShotPolygon {
         private void setCurrentMousePos(Point currentMousePos) {
             this.currentMousePos = currentMousePos;
         }
+        
         /**
          * sets the previous clicked point
          * @param previousClicked 
@@ -118,6 +119,7 @@ public class ScreenShotPolygon {
                 return;
             }
             currentLine.draw(g2d);
+            // if there are enough points to draw the shape 
             if (s.pointsClicked.size() > 2) {
                 s.draw(g2d);
             }
@@ -156,11 +158,6 @@ public class ScreenShotPolygon {
                     currentLine.setCurrentMousePos(me.getPoint());
                     drawOn.repaint();
                 }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent me) {
-
             }
 
 //            private void saveScreen() {
