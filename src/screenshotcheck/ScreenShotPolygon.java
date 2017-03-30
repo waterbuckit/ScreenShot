@@ -25,6 +25,7 @@ public class ScreenShotPolygon {
 
     private final JWindow screen;
     private final PanelDrag drawOn;
+
     /**
      * Constructor for main object, sets up GUI elements.
      */
@@ -39,51 +40,58 @@ public class ScreenShotPolygon {
         screen.setBackground(new Color(0, 0, 0, 50));
         drawOn.setOpaque(false);
     }
-    
+
     /**
      * Main method for initialising the screenShot class.
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         ScreenShotPolygon screenShotter = new ScreenShotPolygon();
         screenShotter.screen.setVisible(true);
     }
-    
+
     /**
      * Class for manipulating the line object
      */
     private static class MyLine {
+
         Point previousClicked;
         Point currentMousePos;
 
         /**
-         * creates a new MyLine, takes only clicked point as the current mouse position
-         * at the start will be the point clicked.
-         * @param clickedPoint 
+         * creates a new MyLine, takes only clicked point as the current mouse
+         * position at the start will be the point clicked.
+         *
+         * @param clickedPoint
          */
         public MyLine(Point clickedPoint) {
             this.previousClicked = clickedPoint;
             this.currentMousePos = clickedPoint;
         }
+
         /**
          * sets the current mouse position
-         * @param currentMousePos 
+         *
+         * @param currentMousePos
          */
         private void setCurrentMousePos(Point currentMousePos) {
             this.currentMousePos = currentMousePos;
         }
-        
+
         /**
          * sets the previous clicked point
-         * @param previousClicked 
+         *
+         * @param previousClicked
          */
-        private void setPreviousClicked(Point previousClicked){
+        private void setPreviousClicked(Point previousClicked) {
             this.previousClicked = previousClicked;
         }
-        
+
         /**
          * Draw method for drawing the current instance of the MyLine
-         * @param g2d 
+         *
+         * @param g2d
          */
         private void draw(Graphics2D g2d) {
             g2d.drawLine(previousClicked.x, previousClicked.y,
@@ -98,6 +106,7 @@ public class ScreenShotPolygon {
 
         private Shape s;
         private MyLine currentLine;
+
         /**
          * constructor sets up the listeners.
          */
@@ -106,32 +115,35 @@ public class ScreenShotPolygon {
             addMouseMotionListener(madapt);
             addMouseListener(madapt);
         }
+
         /**
          * Allows to paint custom objects to screen
-         * @param g 
+         *
+         * @param g
          */
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(new Color(142, 185, 255, 255));
+            g2d.setColor(new Color(8, 255, 0, 255));
             if (currentLine == null || s == null) {
                 return;
             }
             currentLine.draw(g2d);
             // if there are enough points to draw the shape 
-            if (s.pointsClicked.size() > 2) {
-                s.draw(g2d);
-            }
+            s.draw(g2d);
         }
+
         /**
          * custom MouseAdapter for handling mouse events
          */
         private class MouseControl extends MouseAdapter {
+
             /**
-             * Takes a mouse event and uses that to decide whether to create a new
-             * shape or simply add a new point to the shape
-             * @param me 
+             * Takes a mouse event and uses that to decide whether to create a
+             * new shape or simply add a new point to the shape
+             *
+             * @param me
              */
             @Override
             public void mousePressed(MouseEvent me) {
@@ -144,7 +156,7 @@ public class ScreenShotPolygon {
                     } else {
 //                        System.err.println(me.getPoint().toString());
                         s.addPoint(me.getPoint());
-                        for(Point point : s.pointsClicked){
+                        for (Point point : s.pointsClicked) {
                             System.out.println(point.toString());
                         }
                         currentLine.setPreviousClicked(s.getPreviousPoint());
@@ -153,9 +165,11 @@ public class ScreenShotPolygon {
                     System.exit(0);
                 }
             }
+
             /**
              * Updates the current position of the mouse on the MyLine object
-             * @param me 
+             *
+             * @param me
              */
             @Override
             public void mouseMoved(MouseEvent me) {
@@ -182,8 +196,10 @@ public class ScreenShotPolygon {
 
         Point clickedPoint;
         ArrayList<Point> pointsClicked;
+
         /**
-         * Constructor makes a new list of points that have already been clicked.
+         * Constructor makes a new list of points that have already been
+         * clicked.
          */
         public Shape() {
             pointsClicked = new ArrayList<>();
@@ -191,27 +207,31 @@ public class ScreenShotPolygon {
 
         /**
          * adds new points to the to-be polygon.
-         * @param addedPoint 
+         *
+         * @param addedPoint
          */
         private void addPoint(Point addedPoint) {
             pointsClicked.add(addedPoint);
         }
+
         /**
          * returns the previous point.
-         * @return 
+         *
+         * @return
          */
         private Point getPreviousPoint() {
             return pointsClicked.get(pointsClicked.size() - 1);
         }
 
         /**
-         * Draws all the previous lines by iterating over the list, drawing in 
-         * form of (current line in list.x, current line in list.y, previous line in list.x, 
-         * previous line in list.y
-         * @param g2d 
+         * Draws all the previous lines by iterating over the list, drawing in
+         * form of (current line in list.x, current line in list.y, previous
+         * line in list.x, previous line in list.y
+         *
+         * @param g2d
          */
         void draw(Graphics2D g2d) {
-            for (int i = 1; i < pointsClicked.size() - 1; i++) {
+            for (int i = 1; i < pointsClicked.size(); i++) {
                 g2d.drawLine(pointsClicked.get(i).x, pointsClicked.get(i).y,
                         pointsClicked.get(i - 1).x, pointsClicked.get(i - 1).y);
             }
