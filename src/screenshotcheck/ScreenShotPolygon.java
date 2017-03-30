@@ -114,7 +114,7 @@ public class ScreenShotPolygon {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            g2d.setColor(new Color(142, 185, 255, 50));
+            g2d.setColor(new Color(142, 185, 255, 255));
             if (currentLine == null || s == null) {
                 return;
             }
@@ -140,8 +140,13 @@ public class ScreenShotPolygon {
                         currentLine = new MyLine(me.getPoint());
                         s = new Shape();
                         s.addPoint(me.getPoint());
+//                        System.out.println(me.getPoint().toString());
                     } else {
+//                        System.err.println(me.getPoint().toString());
                         s.addPoint(me.getPoint());
+                        for(Point point : s.pointsClicked){
+                            System.out.println(point.toString());
+                        }
                         currentLine.setPreviousClicked(s.getPreviousPoint());
                     }
                 } else if (SwingUtilities.isRightMouseButton(me)) {
