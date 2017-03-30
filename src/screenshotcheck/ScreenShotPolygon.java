@@ -130,7 +130,6 @@ public class ScreenShotPolygon {
                 return;
             }
             currentLine.draw(g2d);
-            // if there are enough points to draw the shape 
             s.draw(g2d);
         }
 
