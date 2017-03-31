@@ -5,14 +5,24 @@
  */
 package screenshotcheck;
 
+import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
@@ -157,7 +167,11 @@ public class ScreenShotPolygon {
                         s.addPoint(currentLine.getCurrentMousePos());
 //                        System.out.println(me.getPoint().toString());
                     } else {
-//                        System.err.println(me.getPoint().toString());
+                        if (currentLine.getCurrentMousePos() == s.getFirstPoint()) {
+//                            screen.setVisible(false);
+                            screenshot(new Rectangle(s.getRectangleOfPoly()));
+                            System.exit(0);
+                        }
                         s.addPoint(currentLine.getCurrentMousePos());
                         for (Point point : s.pointsClicked) {
                             System.out.println(point.toString());
@@ -196,6 +210,16 @@ public class ScreenShotPolygon {
             private int getDistFromFirstPoint() {
                 return (int) Math.sqrt(Math.pow((currentLine.getCurrentMousePos().x - s.getFirstPoint().x), 2) + Math.pow((currentLine.getCurrentMousePos().y - s.getFirstPoint().y), 2));
             }
+
+            private void screenshot(Rectangle rectangle) {
+                try {
+                    BufferedImage screenshot = new Robot().createScreenCapture(rectangle);
+                    screenshot.createGraphics().setClip(new Polygon(s.getXCoords(), s.getYCoords(), s.pointsClicked.size()));
+                    ImageIO.write(screenshot, "png", new File("temp.png"));
+                } catch (AWTException | IOException ex) {
+                    Logger.getLogger(ScreenShotRectangle.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
 
@@ -224,6 +248,69 @@ public class ScreenShotPolygon {
             pointsClicked.add(addedPoint);
         }
 
+        private Rectangle getRectangleOfPoly() {
+            return new Rectangle(this.getLowestXCoord(), this.getLowestYCoord(), this.getWidth(), this.getHeight());
+        }
+        private int[] getXCoords(){
+            int[] xCoords = new int[pointsClicked.size()];
+            for(int i = 0; i < xCoords.length; i++){
+                xCoords[i] = pointsClicked.get(i).x;
+            }
+            return xCoords;
+        }
+        private int[] getYCoords(){
+            int[] yCoords = new int[pointsClicked.size()];
+            for(int i = 0; i < yCoords.length; i++){
+                yCoords[i] = pointsClicked.get(i).x;
+            }
+            return yCoords;
+        }
+        private int getHeight() {
+            int max = 0;
+            for (Point point : pointsClicked) {
+                if (point.y > max) {
+                    max = point.y;
+                }
+            }
+            max = max - getLowestYCoord();
+            System.out.println("Height: " + max);
+            return max;
+        }
+
+        private int getWidth() {
+            int max = 0;
+            for (Point point : pointsClicked) {
+                if (point.x > max) {
+                    max = point.x;
+                }
+            }
+            max = max - getLowestXCoord();
+            System.out.println("Width: " + max);
+            return max;
+        }
+
+        private int getLowestYCoord() {
+            int min = pointsClicked.get(0).y;
+            for (Point point : pointsClicked) {
+                if (point.y < min) {
+                    min = point.y;
+                }
+            }
+            System.out.println("Y: " + min);
+            return min;
+        }
+
+        private int getLowestXCoord() {
+            int min = pointsClicked.get(0).x;
+            for (Point point : pointsClicked) {
+                if (point.x < min) {
+                    min = point.x;
+                }
+            }
+            System.out.println("X: " + min);
+            return min;
+        }
+
         /**
          * returns the previous point.
          *
@@ -234,7 +321,7 @@ public class ScreenShotPolygon {
         }
 
         /**
-         * returtns the first point stored in the array list.
+         * returns the first point stored in the array list.
          *
          * @return
          */
