@@ -70,6 +70,10 @@ public class ScreenShotPolygon {
             this.currentMousePos = clickedPoint;
         }
 
+        private Point getCurrentMousePos() {
+            return currentMousePos;
+        }
+
         /**
          * sets the current mouse position
          *
@@ -150,11 +154,11 @@ public class ScreenShotPolygon {
                     if (s == null) {
                         currentLine = new MyLine(me.getPoint());
                         s = new Shape();
-                        s.addPoint(me.getPoint());
+                        s.addPoint(currentLine.getCurrentMousePos());
 //                        System.out.println(me.getPoint().toString());
                     } else {
 //                        System.err.println(me.getPoint().toString());
-                        s.addPoint(me.getPoint());
+                        s.addPoint(currentLine.getCurrentMousePos());
                         for (Point point : s.pointsClicked) {
                             System.out.println(point.toString());
                         }
@@ -173,7 +177,11 @@ public class ScreenShotPolygon {
             @Override
             public void mouseMoved(MouseEvent me) {
                 if (currentLine != null) {
-                    currentLine.setCurrentMousePos(me.getPoint());
+                    if (getDistFromFirstPoint() < 5 && !s.pointsClicked.isEmpty()) {
+                            currentLine.setCurrentMousePos(s.getFirstPoint());
+                    }else{
+                        currentLine.setCurrentMousePos(me.getPoint());
+                    }
                     drawOn.repaint();
                 }
             }
@@ -185,6 +193,9 @@ public class ScreenShotPolygon {
 //                } catch (AWTException | IOException ex) {
 //                    Logger.getLogger(ScreenShotCheck.class.getName()).log(Level.SEVERE, null, ex);
 //                }
+            private int getDistFromFirstPoint() {
+                return (int) Math.sqrt(Math.pow((currentLine.getCurrentMousePos().x - s.getFirstPoint().x), 2) + Math.pow((currentLine.getCurrentMousePos().y - s.getFirstPoint().y), 2));
+            }
         }
     }
 
@@ -220,6 +231,10 @@ public class ScreenShotPolygon {
          */
         private Point getPreviousPoint() {
             return pointsClicked.get(pointsClicked.size() - 1);
+        }
+
+        private Point getFirstPoint() {
+            return pointsClicked.get(0);
         }
 
         /**
