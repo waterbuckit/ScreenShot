@@ -170,27 +170,28 @@ public class ScreenShotPolygon {
             }
 
             /**
-             * Updates the current position of the mouse based on the MyLine 
+             * Updates the current position of the mouse based on the MyLine
              * object and checks whether on a single mouse movement, the cursor
-             * is within five pixels of the first point. 
+             * is within five pixels of the first point.
              *
              * @param me
              */
             @Override
             public void mouseMoved(MouseEvent me) {
                 if (currentLine != null) {
-                    if (getDistFromFirstPoint() < 5 && s.pointsClicked.size() >= 3) {
-                            currentLine.setCurrentMousePos(s.getFirstPoint());
-                    }else{
-                        currentLine.setCurrentMousePos(me.getPoint());
+                    currentLine.setCurrentMousePos(me.getPoint());
+                    if (getDistFromFirstPoint() < 10 && s.pointsClicked.size() >= 3) {
+                        currentLine.setCurrentMousePos(s.getFirstPoint());
                     }
                     drawOn.repaint();
                 }
             }
+
             /**
-             * gets the integer euclidean distnace between the current mouse position and the first point.
-             * 
-             * @return 
+             * gets the integer euclidean distnace between the current mouse
+             * position and the first point.
+             *
+             * @return
              */
             private int getDistFromFirstPoint() {
                 return (int) Math.sqrt(Math.pow((currentLine.getCurrentMousePos().x - s.getFirstPoint().x), 2) + Math.pow((currentLine.getCurrentMousePos().y - s.getFirstPoint().y), 2));
@@ -231,9 +232,11 @@ public class ScreenShotPolygon {
         private Point getPreviousPoint() {
             return pointsClicked.get(pointsClicked.size() - 1);
         }
+
         /**
          * returtns the first point stored in the array list.
-         * @return 
+         *
+         * @return
          */
         private Point getFirstPoint() {
             return pointsClicked.get(0);
