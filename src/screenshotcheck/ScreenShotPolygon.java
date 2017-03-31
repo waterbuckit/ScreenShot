@@ -170,7 +170,9 @@ public class ScreenShotPolygon {
             }
 
             /**
-             * Updates the current position of the mouse on the MyLine object
+             * Updates the current position of the mouse based on the MyLine 
+             * object and checks whether on a single mouse movement, the cursor
+             * is within five pixels of the first point. 
              *
              * @param me
              */
@@ -185,14 +187,11 @@ public class ScreenShotPolygon {
                     drawOn.repaint();
                 }
             }
-
-//            private void saveScreen() {
-//                try {
-//                    BufferedImage screenshot = new Robot().createScreenCapture(s.rect);
-//                    ImageIO.write(screenshot, "jpg", new File("temp.jpg"));
-//                } catch (AWTException | IOException ex) {
-//                    Logger.getLogger(ScreenShotCheck.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+            /**
+             * gets the integer euclidean distnace between the current mouse position and the first point.
+             * 
+             * @return 
+             */
             private int getDistFromFirstPoint() {
                 return (int) Math.sqrt(Math.pow((currentLine.getCurrentMousePos().x - s.getFirstPoint().x), 2) + Math.pow((currentLine.getCurrentMousePos().y - s.getFirstPoint().y), 2));
             }
@@ -232,7 +231,10 @@ public class ScreenShotPolygon {
         private Point getPreviousPoint() {
             return pointsClicked.get(pointsClicked.size() - 1);
         }
-
+        /**
+         * returtns the first point stored in the array list.
+         * @return 
+         */
         private Point getFirstPoint() {
             return pointsClicked.get(0);
         }
