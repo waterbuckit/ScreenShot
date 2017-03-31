@@ -177,7 +177,7 @@ public class ScreenShotPolygon {
             @Override
             public void mouseMoved(MouseEvent me) {
                 if (currentLine != null) {
-                    if (getDistFromFirstPoint() < 5 && !s.pointsClicked.isEmpty()) {
+                    if (getDistFromFirstPoint() < 5 && s.pointsClicked.size() >= 3) {
                             currentLine.setCurrentMousePos(s.getFirstPoint());
                     }else{
                         currentLine.setCurrentMousePos(me.getPoint());
